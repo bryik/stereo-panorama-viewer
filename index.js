@@ -21,28 +21,61 @@ AFRAME.registerComponent('overunder', {
    * Called once when component is attached. Generally for initial setup.
    */
   init: function () {
-
-    // Texture
-    var texture = new THREE.TextureLoader().load( this.data );
-
-    // Material
-    var material = new THREE.MeshBasicMaterial();
-    material.map = texture;
-
-    // Three group (makes it easier to pause/play/remove)
-    var imageSpheres = new THREE.Group();
-
-    //ImageSphere for left eye
-    var leftSphere = this.createImageSphere(material, 'left');
-    imageSpheres.add(leftSphere)
-
-    //ImageSphere for right eye
-    var rightSphere = this.createImageSphere(material, 'right');
-    imageSpheres.add(rightSphere)
-
-    this.el.setObject3D('imageSpheres', imageSpheres);
-
+    var self = this;
+    var el = this.el;
+    var url = this.data;
     this.updateTexture = false;  // Flag that determines whether to update image sphere
+
+    var container = document.createElement( 'div' );
+    document.body.appendChild( container );
+
+    var info = document.createElement( 'div' );
+    info.style.color = 'red';
+    info.style.position = 'absolute';
+    info.style.top = '10px';
+    info.style.width = '100%';
+    info.style.textAlign = 'center';
+    info.innerHTML = "Loading! (should take < ~5 seconds)";
+    container.appendChild( info );
+
+    // instantiate a loader
+    var loader = new THREE.TextureLoader();
+
+    // load a resource
+    loader.load(
+      // resource URL
+      url,
+      // Function when resource is loaded
+      function ( texture ) {
+        container.removeChild(info);
+        // Material
+        var material = new THREE.MeshBasicMaterial();
+        material.map = texture;
+
+        // Three group (makes it easier to pause/play/remove)
+        var imageSpheres = new THREE.Group();
+
+        //ImageSphere for left eye
+        var leftSphere = self.createImageSphere(material, 'left');
+        imageSpheres.add(leftSphere)
+
+        //ImageSphere for right eye
+        var rightSphere = self.createImageSphere(material, 'right');
+        imageSpheres.add(rightSphere)
+
+        el.setObject3D('imageSpheres', imageSpheres);
+      },
+      // Function called when download progresses
+      function ( xhr ) {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+        info.innerHTML = (xhr.loaded / xhr.total * 100) + '% loaded';
+      },
+      // Function called when download errors
+      function ( xhr ) {
+        console.log( 'An error happened' );
+      }
+    );
+
   },
 
   /**
@@ -50,17 +83,51 @@ AFRAME.registerComponent('overunder', {
    * Generally modifies the entity based on the data.
    */
   update: function (oldData) {
+    var self = this;
+    var url = this.data;
+
     if (this.updateTexture) {
-      // There is a new image, so update
-      // Get imageSpheres
-      var leftSphere = this.el.getObject3D('imageSpheres').children[0];
-      var rightSphere = this.el.getObject3D('imageSpheres').children[1];
-      // New texture
-      var texture = new THREE.TextureLoader().load( this.data );
-      texture.anisotropy = 16;
-      // Set texture
-      leftSphere.material.map = texture;
-      rightSphere.material.map = texture;
+      var container = document.createElement( 'div' );
+      document.body.appendChild( container );
+      // // There is a new image, so update
+      var info = document.createElement( 'div' );
+      info.style.color = 'red';
+      info.style.position = 'absolute';
+      info.style.top = '10px';
+      info.style.width = '100%';
+      info.style.textAlign = 'center';
+      info.innerHTML = "Loading! (should take < ~5 seconds)";
+      container.appendChild( info );
+
+      // instantiate a loader
+      var loader = new THREE.TextureLoader();
+
+      // load a resource
+      loader.load(
+        // resource URL
+        url,
+        // Function when resource is loaded
+        function ( texture ) {
+          container.removeChild(info);
+
+          // Get imageSpheres
+          var leftSphere = self.el.getObject3D('imageSpheres').children[0];
+          var rightSphere = self.el.getObject3D('imageSpheres').children[1];
+          texture.anisotropy = 16;
+          // Set texture
+          leftSphere.material.map = texture;
+          rightSphere.material.map = texture;
+        },
+        // Function called when download progresses
+        function ( xhr ) {
+          console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+          info.innerHTML = (xhr.loaded / xhr.total * 100) + '% loaded';
+        },
+        // Function called when download errors
+        function ( xhr ) {
+          console.log( 'An error happened' );
+        }
+      );
     } else {
       // No update
       this.updateTexture = true;
