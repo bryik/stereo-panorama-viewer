@@ -1,52 +1,38 @@
 
-## TODO
+## Overunder Panorama Viewer
 
-- Add a "now-loading" message
+<p align="center">
+  <img src="https://i.imgur.com/M2OZ06q.gif"/>
+</p>
 
-- Support regular (non-stereo) panoramas
-
-
-## aframe-viewer-component
-
-A panorama viewing component for [A-Frame](https://aframe.io).
+This is a utility for viewing over/under stereo panoramas on the web. Primary focus is on [Ansel](http://www.geforce.com/hardware/technology/ansel), but any panorama in the over/under format should work (e.g. [converted](https://storage.googleapis.com/cardboard-camera-converter/index.html) Cardboard Camera images).
 
 ### API
 
-| Property | Description | Default Value |
-| -------- | ----------- | ------------- |
-|          |             |               |
+| Property |      Description      | Default Value |
+|:--------:|:---------------------:|:-------------:|
+|    N/A   | URL path to the image |      N/A      |
 
-### Installation
+Panoramas are loaded and displayed primarily through the `overunder` component. This component takes one value: a URL (or a selector).
 
-#### Browser
-
-Install and use by directly including the [browser files](dist):
+Example:
 
 ```html
-<head>
-  <title>My A-Frame Scene</title>
-  <script src="https://aframe.io/releases/0.2.0/aframe.min.js"></script>
-  <script src="https://rawgit.com//master/dist/aframe-viewer-component.min.js"></script>
-</head>
-
-<body>
-  <a-scene>
-    <a-entity viewer="exampleProp: exampleVal"></a-entity>
-  </a-scene>
-</body>
+  <a-assets>
+    <img id="witness" src="../assets/witness_painter.jpg">
+  </a-assets>
+  <!-- Inline style -->
+  <a-entity overunder="../assets/witness_painter.jpg"></a-entity>
+  <!-- Selector pointing to asset -->
+  <a-entity overunder="#witness"></a-entity>
 ```
 
-#### npm
+Scenes must also have a stereocam.
 
-Install via npm:
-
-```bash
-npm install aframe-viewer-component
+```html
+  <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
 ```
 
-Then register and use.
+### References
 
-```js
-require('aframe');
-require('aframe-viewer-component');
-```
+See the LICENSE.
