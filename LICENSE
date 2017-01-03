@@ -2,9 +2,10 @@ The MIT License (MIT)
 
 Copyright (c) 2016 Ben Pyrik  <- OverUnder Panorama Viewer
 
-With code from:
+With code taken from:
 Copyright (c) 2015 Kevin Ngo  <- A-Frame component boilerplate
 Copyright (c) 2015 Óscar Marín Miró  <- Stereocam component and UV mapping
+Copyright (c) 2010-2017 three.js authors  <- "three.js webgl - equirectangular panorama" example
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
