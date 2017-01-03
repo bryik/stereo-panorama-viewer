@@ -114,7 +114,11 @@ AFRAME.registerComponent('overunder', {
           var leftSphere = self.el.getObject3D('imageSpheres').children[0];
           var rightSphere = self.el.getObject3D('imageSpheres').children[1];
           texture.anisotropy = 16;
-          // Set texture
+
+          // Dispose old texture
+          leftSphere.material.map.dispose()
+
+          // Set new texture
           leftSphere.material.map = texture;
           rightSphere.material.map = texture;
         },
