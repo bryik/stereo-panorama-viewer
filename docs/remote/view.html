@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Overunder Panorama Viewer - Remote View</title>
+    <script src="../build.js"></script>
+  </head>
+  <body>
+    <a-scene antialias='true'>
+      <a-assets></a-assets>
+
+      <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
+
+      <a-entity id="display" overunder=""></a-entity>
+    </a-scene>
+
+    <!-- Script to get URL from querystring and update the display entity. -->
+    <script type="text/javascript">
+      // Would have used URLSearchParams but Safari...
+      // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+      function getParameterByName(name, url) {
+          if (!url) {
+            url = window.location.href;
+          }
+          name = name.replace(/[\[\]]/g, "\\$&");
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+              results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      // Get URL from querystring
+      var imageURL = getParameterByName('url');
+      // Apply to image sphere
+      var display = document.querySelector('#display');
+      display.setAttribute('overunder', imageURL);
+    </script>
+
+  </body>
+</html>

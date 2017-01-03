@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Overunder Panorama Viewer - Remote</title>
+    <script src="../build.js"></script>
+    <link rel="stylesheet" href="buttons-min.css">
+    <link rel="stylesheet" href="forms-min.css">
+    <style>
+      html {
+        background: #33425B;
+        color: #FAFAFA;
+        font-family: monospace;
+        font-size: 20px;
+        padding: 10px 20px;
+      }
+      h1 {
+        font-weight: 300;
+      }
+      a {
+        color: #EF2D5E;
+        display: inline;
+        padding: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1> Overunder Panorama Viewer - Remote </h1>
+
+    <p>Enter a <b> DIRECT </b> link to a stereo panorama hosted on a CORS-enabled host (e.g. Imgur).</p>
+
+    <form class="pure-form" action="view.html">
+      <input class="pure-input-2-3" type="text" name="url">
+      <button class="pure-button" type="submit"  style="font-size: 70%; background-color: #EF2D5E">GO</button>
+    </form>
+
+    <p>For example: <a href="http://i.imgur.com/xLc3Kj7.jpg">http://i.imgur.com/xLc3Kj7.jpg</a>.</p>
+  </body>
+</html>

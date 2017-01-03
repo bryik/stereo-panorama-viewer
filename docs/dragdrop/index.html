@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>Overunder Panorama Viewer - Drag and Drop</title>
+    <script src="../build.js"></script>
+    <style>
+      html {
+        font-family: monospace;
+        font-size: 20px;
+      }
+      h1 {
+        font-weight: 300;
+      }
+      a {
+        color: #EF2D5E;
+        display: block;
+        padding: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="witness" src="../assets/witness_painter.jpg">
+      </a-assets>
+
+      <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
+
+      <a-entity id="display" overunder="#witness"></a-entity>
+    </a-scene>
+
+    <script type="text/javascript">
+      var container = document.createElement( 'div' );
+      document.body.appendChild( container );
+
+      var info = document.createElement( 'div' );
+      info.style.color = 'red';
+      info.style.position = 'absolute';
+      info.style.top = '10px';
+      info.style.width = '100%';
+      info.style.textAlign = 'center';
+      info.innerHTML = 'Drag and drop an image onto this page!';
+      container.appendChild( info );
+
+      // Based on https://github.com/mrdoob/three.js/blob/master/examples/webgl_panorama_equirectangular.html
+      document.addEventListener('dragover', dragover, false);
+      document.addEventListener('dragenter', dragenter, false);
+      document.addEventListener('dragleave', dragleave, false);
+      document.addEventListener('drop', drop, false);
+
+      function dragover(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+      }
+
+      function dragenter(event) {
+        // Provides feedback to the user
+        document.body.style.opacity = 0.5;
+        info.innerHTML = "Now release!";
+      }
+
+      function dragleave(event) {
+        // Reset
+        document.body.style.opacity = 1;
+        info.innerHTML = 'Drag and drop an image onto this page!';
+      }
+
+      function drop(event) {
+        container.removeChild(info);
+        event.preventDefault();
+        var reader = new FileReader();
+        reader.addEventListener( 'load', function ( event ) {
+          var image = event.target.result;
+          var display = document.querySelector('#display');
+          display.setAttribute('overunder', image);
+        }, false );
+        reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
+        document.body.style.opacity = 1;
+      }
+    </script>
+  </body>
+</html>
