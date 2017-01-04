@@ -5,7 +5,7 @@
   <img width="50%" src="http://i.imgur.com/yr88MXS.gif"/>
 </p>
 
-This is a utility for viewing over/under stereo panoramas on the web. Primary focus is on [Ansel](http://www.geforce.com/hardware/technology/ansel), but any panorama in the over/under format should work (e.g. [converted](https://storage.googleapis.com/cardboard-camera-converter/index.html) Cardboard Camera images).
+This is a utility for viewing over/under stereo panoramas on the web and locally (without having to pay for Virtual Desktop!). Primary focus is on [Ansel](http://www.geforce.com/hardware/technology/ansel), but any panorama in the over/under format should work (e.g. [converted](https://storage.googleapis.com/cardboard-camera-converter/index.html) Cardboard Camera images).
 
 ### API
 
