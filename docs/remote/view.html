@@ -2,6 +2,7 @@
   <head>
     <title>Overunder Panorama Viewer - Remote View</title>
     <script src="../build.js"></script>
+    <script src="URI.js"></script>
   </head>
   <body>
     <a-scene>
@@ -14,25 +15,18 @@
 
     <!-- Script to get URL from querystring and update the display entity. -->
     <script type="text/javascript">
-      // Would have used URLSearchParams but Safari...
-      // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-      function getParameterByName(name, url) {
-          if (!url) {
-            url = window.location.href;
-          }
-          name = name.replace(/[\[\]]/g, "\\$&");
-          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-              results = regex.exec(url);
-          if (!results) return null;
-          if (!results[2]) return '';
-          return decodeURIComponent(results[2].replace(/\+/g, " "));
-      }
 
       // Get URL from querystring
-      var imageURL = getParameterByName('url');
+      var uri = new URI(window.location.href);
+      var qs = uri.search(true);
+
+      // Ensure https is used
+      var imgurURL = new URI(qs.url);
+      var rebuiltURL = "https://i.imgur.com/" + imgurURL.filename()
+
       // Apply to image sphere
       var display = document.querySelector('#display');
-      display.setAttribute('overunder', imageURL);
+      display.setAttribute('overunder', rebuiltURL);
     </script>
 
   </body>
