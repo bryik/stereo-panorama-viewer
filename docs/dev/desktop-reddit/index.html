@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Overunder Panorama Viewer - Desktop Reddit</title>
+    <script src="../../build.js"></script>
+    <style>
+      html {
+        font-family: monospace;
+        font-size: 20px;
+      }
+      h1 {
+        font-weight: 300;
+      }
+      a {
+        color: #EF2D5E;
+        display: block;
+        padding: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="witness" src="../../assets/witness_painter.jpg">
+      </a-assets>
+
+      <a-entity id='leftControl' vive-controls="hand: left"></a-entity>
+      <a-entity id='rightControl' vive-controls="hand: right"></a-entity>
+
+      <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
+
+      <a-entity id="display" overunder="#witness"></a-entity>
+    </a-scene>
+
+    <script type="text/javascript">
+
+      // https://developers.google.com/web/updates/2015/03/introduction-to-fetch
+      function status(response) {
+        if (response.status >= 200 && response.status < 300) {
+          return Promise.resolve(response)
+        } else {
+          return Promise.reject(new Error(response.statusText))
+        }
+      }
+
+      function json(response) {
+        return response.json()
+      }
+
+      fetch('https://www.reddit.com/r/overundervr/.json')
+        .then(status)
+        .then(json)
+        .then(function(data) {
+          console.log('Request succeeded with JSON response');
+          var submissions = data.data.children;
+
+          // Get URLs and replace http with https
+          // http://stackoverflow.com/questions/5491196/rewriting-http-url-to-https-using-regular-expression-and-javascript
+          var urls = [];
+          var url;
+          for (var i = 0; i < submissions.length; i++) {
+            url = submissions[i].data.url;
+            urls.push(url.replace(/^http:\/\//i, 'https://'))
+          }
+
+          start(urls);
+
+        }).catch(function(error) {
+          console.log('Request failed', error);
+        });
+
+      function start(urls) {
+        // Keep track of which post is being shown
+        var index = 0;
+        // Spacebar press
+        document.body.onkeyup = function(e){
+            if(e.keyCode == 32){
+                onclick()
+            }
+        }
+
+        function onclick() {
+          var display = document.querySelector("#display");
+          display.setAttribute("overunder", urls[index])
+          index += 1;
+
+          // Reset
+          if (index === (urls.length - 1)) {
+            index = 0;
+          }
+        }
+      }
+
+      // Based on https://github.com/mrdoob/three.js/blob/master/examples/webgl_panorama_equirectangular.html
+      document.addEventListener('dragover', dragover, false);
+      document.addEventListener('dragenter', dragenter, false);
+      document.addEventListener('dragleave', dragleave, false);
+      document.addEventListener('drop', drop, false);
+
+      function dragover(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        event.dataTransfer.dropEffect = 'copy';
+      }
+
+      function dragenter(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Provides feedback to the user
+        document.body.style.opacity = 0.5;
+      }
+
+      function dragleave(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Reset
+        document.body.style.opacity = 1;
+      }
+
+      function drop(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var reader = new FileReader();
+        reader.addEventListener( 'load', function ( event ) {
+          var image = event.target.result;
+          var display = document.querySelector('#display');
+          display.setAttribute('overunder', image);
+        }, false );
+        reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
+        document.body.style.opacity = 1;
+      }
+
+    </script>
+  </body>
+</html>
