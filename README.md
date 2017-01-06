@@ -1,5 +1,5 @@
 
-## Overunder Panorama Utilities
+## Overunder Panorama Viewer
 
 <p align="center">
   <img width="50%" src="https://i.imgur.com/yr88MXS.gif"/>
@@ -7,7 +7,7 @@
 
 This is a set of utilities for viewing over/under stereo panoramas on the web and locally (without having to pay for Virtual Desktop!). Primary focus is on [Ansel](http://www.geforce.com/hardware/technology/ansel), but any panorama in the over/under format should work (e.g. [converted](https://storage.googleapis.com/cardboard-camera-converter/index.html) Cardboard Camera images).
 
-### API
+### Overunder Component API
 
 | Property |      Description      | Default Value |
 |:--------:|:---------------------:|:-------------:|
