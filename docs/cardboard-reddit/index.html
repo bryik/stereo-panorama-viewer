@@ -23,6 +23,9 @@
         <img id="witness" src="../assets/witness_painter.jpg">
       </a-assets>
 
+      <a-entity id='leftControl' vive-controls="hand: left"></a-entity>
+      <a-entity id='rightControl' vive-controls="hand: right"></a-entity>
+
       <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
 
       <a-entity id="display" overunder="#witness"></a-entity>
@@ -68,7 +71,14 @@
       function start(urls) {
         // Keep track of which post is being shown
         var index = 0;
+        // Mouse click
         document.addEventListener('click', onclick);
+
+        // Vive click
+        var leftControl = document.querySelector("#leftControl");
+        leftControl.addEventListener('triggerdown', onclick);
+        var rightControl = document.querySelector("#rightControl");
+        rightControl.addEventListener('triggerdown', onclick);
 
         function onclick() {
           var display = document.querySelector("#display");
@@ -81,6 +91,7 @@
           }
         }
       }
+
     </script>
   </body>
 </html>
