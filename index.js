@@ -96,7 +96,7 @@ AFRAME.registerComponent('overunder', {
       info.style.top = '10px';
       info.style.width = '100%';
       info.style.textAlign = 'center';
-      info.innerHTML = "Loading! (should take < ~5 seconds)";
+      info.innerHTML = "Loading!";
       container.appendChild( info );
 
       // instantiate a loader
