@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <title>Overunder Panorama Viewer - Cardboard Reddit</title>
+    <script src="../build.js"></script>
+    <style>
+      html {
+        font-family: monospace;
+        font-size: 20px;
+      }
+      h1 {
+        font-weight: 300;
+      }
+      a {
+        color: #EF2D5E;
+        display: block;
+        padding: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="witness" src="../assets/witness_painter.jpg">
+      </a-assets>
+
+      <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
+
+      <a-entity id="display" overunder="#witness"></a-entity>
+    </a-scene>
+
+    <script type="text/javascript">
+
+      // https://developers.google.com/web/updates/2015/03/introduction-to-fetch
+      function status(response) {
+        if (response.status >= 200 && response.status < 300) {
+          return Promise.resolve(response)
+        } else {
+          return Promise.reject(new Error(response.statusText))
+        }
+      }
+
+      function json(response) {
+        return response.json()
+      }
+
+      fetch('https://www.reddit.com/r/overundervr/.json')
+        .then(status)
+        .then(json)
+        .then(function(data) {
+          console.log('Request succeeded with JSON response');
+          var submissions = data.data.children;
+
+          // Shave off a layer to get to the posts themselves
+          var urls = [];
+          for (var i = 0; i < submissions.length; i++) {
+            urls.push(submissions[i].data.url)
+          }
+
+          start(urls);
+
+        }).catch(function(error) {
+          console.log('Request failed', error);
+        });
+
+      function start(urls) {
+        // Keep track of which post is being shown
+        var index = 0;
+        document.addEventListener('click', onclick);
+
+        function onclick() {
+          var display = document.querySelector("#display");
+          display.setAttribute("overunder", urls[index])
+          index += 1;
+
+          // Reset
+          if (index === (urls.length - 1)) {
+            index = 0;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
