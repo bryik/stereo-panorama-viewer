@@ -50,10 +50,13 @@
           console.log('Request succeeded with JSON response');
           var submissions = data.data.children;
 
-          // Shave off a layer to get to the posts themselves
+          // Get URLs and replace http with https
+          // http://stackoverflow.com/questions/5491196/rewriting-http-url-to-https-using-regular-expression-and-javascript
           var urls = [];
+          var url;
           for (var i = 0; i < submissions.length; i++) {
-            urls.push(submissions[i].data.url)
+            url = submissions[i].data.url;
+            urls.push(url.replace(/^http:\/\//i, 'https://'))
           }
 
           start(urls);
