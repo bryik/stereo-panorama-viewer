@@ -40,6 +40,7 @@ AFRAME.registerComponent('overunder', {
 
     // instantiate a loader
     var loader = new THREE.TextureLoader();
+    loader.setCrossOrigin("");
 
     // load a resource
     loader.load(
