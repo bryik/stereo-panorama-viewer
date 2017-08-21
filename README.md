@@ -18,14 +18,10 @@ Panoramas are loaded and displayed primarily through the `overunder` component. 
 Example:
 
 ```html
-  <a-assets>
-    <img id="witness" src="../assets/witness_painter.jpg">
-  </a-assets>
-  <!-- Inline style -->
   <a-entity overunder="../assets/witness_painter.jpg"></a-entity>
-  <!-- Selector pointing to asset -->
-  <a-entity overunder="#witness"></a-entity>
 ```
+
+Currently there is no integration with A-Frame's asset management system. See [this issue](https://github.com/bryik/overunder-aframe/issues/5).
 
 Scenes must also have a stereocam.
 
