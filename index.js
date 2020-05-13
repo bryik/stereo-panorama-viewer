@@ -52,7 +52,7 @@ AFRAME.registerComponent("overunder", {
       function (texture) {
         container.removeChild(info);
         // Material
-        var material = new THREE.MeshBasicMaterial();
+        var material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide });
         material.map = texture;
 
         // Three group (makes it easier to pause/play/remove)
