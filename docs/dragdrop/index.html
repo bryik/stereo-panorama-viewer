@@ -20,7 +20,7 @@
     </style>
   </head>
   <body>
-    <a-scene>
+    <a-scene stats>
       <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
 
       <a-entity
@@ -30,6 +30,11 @@
     </a-scene>
 
     <script type="text/javascript">
+      const displayEl = document.querySelector("#display");
+      displayEl.addEventListener("loadError", function (event) {
+        console.error(event);
+      });
+
       // Based on https://github.com/mrdoob/three.js/blob/master/examples/webgl_panorama_equirectangular.html
       document.addEventListener("dragover", dragover, false);
       document.addEventListener("dragenter", dragenter, false);
@@ -63,12 +68,11 @@
         event.preventDefault();
         event.stopPropagation();
 
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.addEventListener(
           "load",
           function (event) {
-            var image = event.target.result;
-            var display = document.querySelector("#display");
+            const image = event.target.result;
             display.setAttribute("overunder", image);
           },
           false
