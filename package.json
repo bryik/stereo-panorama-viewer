@@ -1,6 +1,6 @@
 {
   "name": "aframe-overunder-viewer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Over/under Panorama Viewer for A-Frame.",
   "main": "index.js",
   "scripts": {
