@@ -1,5 +1,7 @@
 # stereo-panorama-viewer
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7593898f-a7d9-4896-b275-1a1494290752/deploy-status)](https://app.netlify.com/sites/stereo-panorama-viewer/deploys)
+
 View stereoscopic panoramas in your browser!
 
 ## usage
