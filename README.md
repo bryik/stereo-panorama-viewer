@@ -1,34 +1,72 @@
+# stereo-panorama-viewer
 
-## Overunder Panorama Viewer
+View stereoscopic panoramas in your browser!
 
-<p align="center">
-  <img width="50%" src="https://i.imgur.com/yr88MXS.gif"/>
-</p>
+## usage
 
-This is a set of utilities for viewing over/under stereo panoramas on the web and locally (without having to pay for Virtual Desktop!). Primary focus is on [Ansel](http://www.geforce.com/hardware/technology/ansel), but any panorama in the over/under format should work (e.g. [converted](https://storage.googleapis.com/cardboard-camera-converter/index.html) Cardboard Camera images).
+TODO: add link to deployed version
 
-### Overunder Component API
+### format
 
-| Property |      Description      | Default Value |
-|:--------:|:---------------------:|:-------------:|
-|    N/A   | URL path to the image |      N/A      |
+Only ["stacked"](https://developers.google.com/vr/discover/360-degree-media#common_formats) panoramas are supported. A "stacked" panorama is composed of two equirectangular-panoramas one on top of the other. Two sources are:
 
-Panoramas are loaded and displayed primarily through the `overunder` component. This component takes one value: a URL (or a selector).
+- [NVIDIA Ansel](https://www.nvidia.com/en-us/geforce/geforce-experience/ansel/)
+- Cardboard Camera (after [conversion](https://storage.googleapis.com/cardboard-camera-converter/index.html))
+
+## query parameters
+
+### `url`
+
+Should contain a direct link to a panorama.
 
 Example:
 
-```html
-  <a-entity overunder="../assets/witness_painter.jpg"></a-entity>
+```
+https://stereo-pano-viewer-dev.netlify.app/?url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
 ```
 
-Currently there is no integration with A-Frame's asset management system. See [this issue](https://github.com/bryik/overunder-aframe/issues/5).
+### `embedded`
 
-Scenes must also have a stereocam.
+If the querystring contains `embedded`, then all UI will be hidden except for the "Enter VR" button.
 
-```html
-  <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
+Example:
+
+```
+https://stereo-pano-viewer-dev.netlify.app/?embedded=&url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
 ```
 
-### References
+## local development
 
-See the LICENSE.
+Install the dependencies...
+
+```bash
+cd stereo-panorama-viewer
+npm install
+```
+
+...then start [Rollup](https://rollupjs.org):
+
+```bash
+npm run dev
+```
+
+Navigate to [localhost:5000](http://localhost:5000). You should see the app running.
+
+By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+
+## building
+
+To create an optimised version of the app:
+
+```bash
+npm run build
+```
+
+## deployment
+
+`stereo-panorama-viewer` automatically deploys to GitHub Pages every time a commit is pushed to the `master` branch.
+
+## notes
+
+- This repo used to be called "overunder-aframe". It has been renamed to be more
+  descriptive and to refocus on a core feature: displaying stereo panoramas.
