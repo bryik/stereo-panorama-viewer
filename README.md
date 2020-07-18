@@ -6,7 +6,7 @@ View stereoscopic panoramas in your browser!
 
 ## usage
 
-TODO: add link to deployed version
+- Head to [https://stereo-panorama-viewer.netlify.app/](https://stereo-panorama-viewer.netlify.app/) to try it out.
 
 ### format
 
