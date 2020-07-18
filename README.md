@@ -2,6 +2,8 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7593898f-a7d9-4896-b275-1a1494290752/deploy-status)](https://app.netlify.com/sites/stereo-panorama-viewer/deploys)
 
+<img alt="A red pond with some UI overlaid" src="https://user-images.githubusercontent.com/12419712/87863325-9b022680-c91f-11ea-94be-1374d0b0824b.png">
+
 View stereoscopic panoramas in your browser!
 
 ## usage
