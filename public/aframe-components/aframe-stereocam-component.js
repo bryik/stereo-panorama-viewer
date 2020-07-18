@@ -52,6 +52,5 @@ AFRAME.registerComponent("stereocam", {
     } else {
       camera.layers.enable(data.eye === "left" ? 1 : 2);
     }
-    console.log(camera.layers);
   },
 });
