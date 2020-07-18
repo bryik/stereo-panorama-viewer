@@ -68,7 +68,7 @@
     <form
       on:submit|preventDefault={handleLoadClick}
       class="instructions avenir ma3 pa3 bg-near-white br3 shadow-4">
-      <GithubCorner repoUrl="https://github.com/bryik/overunder-aframe" />
+      <GithubCorner repoUrl="https://github.com/bryik/stereo-panorama-viewer" />
       <h1 class="f4 f3-ns lh-title">Stereo Panorama Viewer</h1>
       <p class="lh-copy f5 measure">
         Drag and drop a
