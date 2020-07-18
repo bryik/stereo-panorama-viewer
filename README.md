@@ -2,6 +2,39 @@
 
 View stereoscopic panoramas in your browser!
 
+## usage
+
+TODO: add link to deployed version
+
+### format
+
+Only ["stacked"](https://developers.google.com/vr/discover/360-degree-media#common_formats) panoramas are supported. A "stacked" panorama is composed of two equirectangular-panoramas one on top of the other. Two sources are:
+
+- [NVIDIA Ansel](https://www.nvidia.com/en-us/geforce/geforce-experience/ansel/)
+- Cardboard Camera (after [conversion](https://storage.googleapis.com/cardboard-camera-converter/index.html))
+
+## query parameters
+
+### `url`
+
+Should contain a direct link to a panorama.
+
+Example:
+
+```
+https://stereo-pano-viewer-dev.netlify.app/?url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
+```
+
+### `embedded`
+
+If the querystring contains `embedded`, then all UI will be hidden except for the "Enter VR" button.
+
+Example:
+
+```
+https://stereo-pano-viewer-dev.netlify.app/?embedded=&url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
+```
+
 ## local development
 
 Install the dependencies...
