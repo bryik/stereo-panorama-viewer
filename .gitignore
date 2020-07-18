@@ -1,6 +1,4 @@
-.sw[ponm]
-docs/node_modules/
-gh-pages
-node_modules/
-npm-debug.log
-package-lock.json
+/node_modules/
+/public/build/
+
+.DS_Store

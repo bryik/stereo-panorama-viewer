@@ -1,0 +1,9 @@
+/*
+ * A-Frame's 'stats' component draws an absolutely positioned div in the top
+ * right which gets in the way. This style forces it to the bottom of the screen
+ * https://aframe.io/docs/1.0.0/components/stats.html
+ */
+.rs-base {
+  bottom: 20px;
+  top: auto !important;
+}

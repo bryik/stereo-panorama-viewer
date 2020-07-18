@@ -1,34 +1,39 @@
+# stereo-panorama-viewer
 
-## Overunder Panorama Viewer
+View stereoscopic panoramas in your browser!
 
-<p align="center">
-  <img width="50%" src="https://i.imgur.com/yr88MXS.gif"/>
-</p>
+## local development
 
-This is a set of utilities for viewing over/under stereo panoramas on the web and locally (without having to pay for Virtual Desktop!). Primary focus is on [Ansel](http://www.geforce.com/hardware/technology/ansel), but any panorama in the over/under format should work (e.g. [converted](https://storage.googleapis.com/cardboard-camera-converter/index.html) Cardboard Camera images).
+Install the dependencies...
 
-### Overunder Component API
-
-| Property |      Description      | Default Value |
-|:--------:|:---------------------:|:-------------:|
-|    N/A   | URL path to the image |      N/A      |
-
-Panoramas are loaded and displayed primarily through the `overunder` component. This component takes one value: a URL (or a selector).
-
-Example:
-
-```html
-  <a-entity overunder="../assets/witness_painter.jpg"></a-entity>
+```bash
+cd stereo-panorama-viewer
+npm install
 ```
 
-Currently there is no integration with A-Frame's asset management system. See [this issue](https://github.com/bryik/overunder-aframe/issues/5).
+...then start [Rollup](https://rollupjs.org):
 
-Scenes must also have a stereocam.
-
-```html
-  <a-camera position="0 0 0" stereocam="eye:left;"></a-camera>
+```bash
+npm run dev
 ```
 
-### References
+Navigate to [localhost:5000](http://localhost:5000). You should see the app running.
 
-See the LICENSE.
+By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+
+## building
+
+To create an optimised version of the app:
+
+```bash
+npm run build
+```
+
+## deployment
+
+`stereo-panorama-viewer` automatically deploys to GitHub Pages every time a commit is pushed to the `master` branch.
+
+## notes
+
+- This repo used to be called "overunder-aframe". It has been renamed to be more
+  descriptive and to refocus on a core feature: displaying stereo panoramas.
