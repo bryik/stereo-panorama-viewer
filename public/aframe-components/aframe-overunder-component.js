@@ -115,7 +115,12 @@ AFRAME.registerComponent("overunder", {
 
     var sphere = new THREE.Mesh(geometry, material);
     sphere.name = side === "left" ? "leftSphere" : "rightSphere";
-    // left eye sees layer 1, right eye sees layer 2
+    // THREE's WebXRManager enables layer 1 for the left eye and layer 2 for
+    // the right eye. So we'll place the left sphere in layer 1 and the right
+    // sphere in layer 2.
+    // Note: to make the panorama show up outside of VR, the default camera
+    // must be able to see layer 1 or layer 2 (this is where the stereocam
+    // component comes in.)
     var layer = side === "left" ? 1 : 2;
     sphere.layers.set(layer);
     sphere.scale.x = -1; // like using THREE.Backside but avoids mirroring
