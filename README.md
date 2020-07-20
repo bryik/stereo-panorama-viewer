@@ -8,7 +8,7 @@ View stereoscopic panoramas in your browser!
 
 ## usage
 
-- Head to [https://stereo-panorama-viewer.netlify.app/](https://stereo-panorama-viewer.netlify.app/) to try it out.
+- Head to [https://spano.photos](https://spano.photos/) to try it out.
 
 ### format
 
@@ -28,7 +28,7 @@ Should contain a direct link to a panorama.
 Example:
 
 ```
-https://stereo-pano-viewer-dev.netlify.app/?url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
+https://spano.photos/?url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
 ```
 
 ### `embedded`
@@ -38,7 +38,7 @@ If the querystring contains `embedded`, then all UI will be hidden except for th
 Example:
 
 ```
-https://stereo-pano-viewer-dev.netlify.app/?embedded=&url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
+https://spano.photos/?embedded=&url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
 ```
 
 ## local development
@@ -70,7 +70,7 @@ npm run build
 
 ## deployment
 
-`stereo-panorama-viewer` automatically deploys to GitHub Pages every time a commit is pushed to the `master` branch.
+`stereo-panorama-viewer` automatically deploys to Netlify every time a commit is pushed to the `master` branch.
 
 ## notes
 
