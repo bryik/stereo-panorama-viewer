@@ -31,3 +31,26 @@ function createRemoteUrl() {
   };
 }
 export const remoteUrl = createRemoteUrl();
+
+/**
+ * Creates a store to hold an ObjectURL.
+ * Drag and drop or file upload reads in a file as an ObjectURL and this store
+ * makes it accessible as well as ensures old ObjectURLs are disposed.
+ */
+function createObjectUrlStore() {
+  const objectUrl = writable(null);
+
+  function augmentedSet(newObjectUrl) {
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+    }
+    objectUrl.set(newObjectUrl);
+  }
+
+  return {
+    subscribe: objectUrl.subscribe,
+    set: augmentedSet,
+  };
+}
+
+export const localUrl = createObjectUrlStore();
