@@ -37,6 +37,8 @@
 
   function handleFormSubmit() {
     remoteUrl.set(urlInputValue);
+    localUrl.set(null);
+    file = null;
   }
 
   function handleFileUpload(event) {
@@ -148,12 +150,29 @@
         type="submit">
         Go
       </button>
-      <input
-        id="file-upload"
-        type="file"
-        accept="image/*"
-        on:change={handleFileUpload}
-        style="display:none" />
+      <!--
+        This is a hack to reset the <input> when remoteUrl is set.
+        Without this, an uploaded file persists even after the user enters a
+        URL; if the same file is uploaded again, nothing happens because the
+        <input> doesn't change.
+      -->
+      {#if $remoteUrl}
+        <input
+          id="file-upload"
+          type="file"
+          accept="image/*"
+          on:change={handleFileUpload}
+          style="display:none"
+          value="" />
+      {:else}
+        <input
+          id="file-upload"
+          type="file"
+          accept="image/*"
+          on:change={handleFileUpload}
+          style="display:none"
+          value="" />
+      {/if}
       <button
         id="upload-button"
         class="f6 link dim br2 ph3 pv2 mb2 dib white bg-near-black"
