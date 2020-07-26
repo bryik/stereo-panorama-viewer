@@ -69,7 +69,7 @@
 
   @media screen and (min-width: 30em) {
     .instructions {
-      left: 10;
+      left: 1rem;
     }
   }
 </style>
