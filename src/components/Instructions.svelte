@@ -3,13 +3,14 @@
   // direct links to panoramas.
 
   import GithubCorner from "./GithubCorner.svelte";
-  import { remoteUrl } from "../stores.js";
+  import { remoteUrl, localUrl } from "../stores.js";
 
   // API
   export let visible = true;
 
   // Local state
   let urlInputValue = "";
+  let file = null;
   let minimized = false;
   const examples = [
     {
@@ -34,8 +35,20 @@
     minimized = !minimized;
   }
 
-  function handleLoadClick() {
+  function handleFormSubmit() {
     remoteUrl.set(urlInputValue);
+  }
+
+  function handleFileUpload(event) {
+    file = event.target.files[0];
+    const fileObjectUrl = URL.createObjectURL(file);
+    remoteUrl.set(null);
+    localUrl.set(fileObjectUrl);
+  }
+
+  function handleFileClick() {
+    const fileInput = document.getElementById("file-upload");
+    fileInput.click();
   }
 </script>
 
@@ -43,7 +56,6 @@
   .instructions {
     position: absolute;
     z-index: 10;
-    left: 1rem;
     top: 1rem;
   }
 
@@ -53,6 +65,12 @@
 
   summary {
     cursor: pointer;
+  }
+
+  @media screen and (min-width: 30em) {
+    .instructions {
+      left: 10;
+    }
   }
 </style>
 
@@ -66,7 +84,7 @@
     </div>
   {:else}
     <form
-      on:submit|preventDefault={handleLoadClick}
+      on:submit|preventDefault={handleFormSubmit}
       class="instructions avenir ma3 pa3 bg-near-white br3 shadow-4">
       <GithubCorner repoUrl="https://github.com/bryik/stereo-panorama-viewer" />
       <h1 class="f4 f3-ns lh-title">Stereo Panorama Viewer</h1>
@@ -89,7 +107,7 @@
               style="cursor: pointer"
               on:click={() => {
                 urlInputValue = url;
-                handleLoadClick();
+                handleFormSubmit();
               }}>
               {label}
             </p>
@@ -99,7 +117,7 @@
               style="cursor: pointer"
               on:click={() => {
                 urlInputValue = url;
-                handleLoadClick();
+                handleFormSubmit();
               }}>
               {label}
             </p>
@@ -125,12 +143,26 @@
         </div>
       </div>
       <button
-        id="load-button"
         class="f6 link dim br2 ph3 pv2 mb2 dib white bg-near-black"
         style="cursor: pointer;"
         type="submit">
-        Load
+        Go
       </button>
+      <input
+        id="file-upload"
+        type="file"
+        accept="image/*"
+        on:change={handleFileUpload}
+        style="display:none" />
+      <button
+        id="upload-button"
+        class="f6 link dim br2 ph3 pv2 mb2 dib white bg-near-black"
+        style="cursor: pointer;"
+        type="button"
+        on:click={handleFileClick}>
+        {file ? file.name : 'Upload'}
+      </button>
+
       <button
         id="close-button"
         type="button"

@@ -4,14 +4,11 @@
 
   import { onMount, onDestroy } from "svelte";
 
-  import { remoteUrl } from "../stores.js";
+  import { remoteUrl, localUrl } from "../stores.js";
 
   // Local state
   let scene;
   let panoDisplay;
-  // droppedImage is a base64 encoded image populated after a panorama is dragged
-  // and dropped.
-  let droppedImage;
 
   onMount(() => {
     // Wait for A-Frame to load before attempting to manipulate the scene.
@@ -63,12 +60,9 @@
     event.stopPropagation();
 
     function onImageLoad(event) {
-      const image = event.target.result;
-      // Dispose old ObjectURL
-      // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
-      URL.revokeObjectURL(droppedImage);
-      droppedImage = image;
+      const imageObjectUrl = event.target.result;
       remoteUrl.set(null);
+      localUrl.set(imageObjectUrl);
     }
 
     const reader = new FileReader();
@@ -84,5 +78,5 @@
   <a-entity
     bind:this={panoDisplay}
     rotation="0 0 0"
-    overunder={!$remoteUrl ? droppedImage : $remoteUrl} />
+    overunder={!$remoteUrl ? $localUrl : $remoteUrl} />
 </a-scene>
