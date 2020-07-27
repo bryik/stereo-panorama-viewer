@@ -2,16 +2,20 @@
   // This component explains how to use the app and provides a way to enter
   // direct links to panoramas.
 
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   import GithubCorner from "./GithubCorner.svelte";
-  import { remoteUrl, localUrl } from "../stores.js";
+  import isObjectUrl from "../utils/isObjectUrl.js";
 
   // API
   export let visible = true;
+  export let panoUrl = null;
+  export let filename = null;
 
   // Local state
-  let urlInputValue = "";
-  let file = null;
   let minimized = false;
+  let urlInputValue = "";
   const examples = [
     {
       url: "https://i.imgur.com/PgAHSy8.jpg",
@@ -31,21 +35,33 @@
     }
   ];
 
+  $: {
+    // Reset url input when a panorama is drag-and-dropped or uploaded.
+    if (isObjectUrl(panoUrl)) {
+      urlInputValue = "";
+    } else {
+      // A remote URL has been loaded, so update url input to reflect this.
+      urlInputValue = panoUrl;
+    }
+  }
+
   function toggleMinimized() {
     minimized = !minimized;
   }
 
   function handleFormSubmit() {
-    remoteUrl.set(urlInputValue);
-    localUrl.set(null);
-    file = null;
+    dispatch("submission", {
+      url: urlInputValue
+    });
   }
 
   function handleFileUpload(event) {
-    file = event.target.files[0];
-    const fileObjectUrl = URL.createObjectURL(file);
-    remoteUrl.set(null);
-    localUrl.set(fileObjectUrl);
+    const uploadedFile = event.target.files[0];
+    const fileObjectUrl = URL.createObjectURL(uploadedFile);
+    dispatch("upload", {
+      filename: uploadedFile.name,
+      objectUrl: fileObjectUrl
+    });
   }
 
   function handleFileClick() {
@@ -103,7 +119,7 @@
       <details>
         <summary class="f5 lh-copy">Examples</summary>
         {#each examples as { url, label }, i}
-          {#if url === $remoteUrl}
+          {#if url === panoUrl}
             <p
               class="f5 lh-copy ml3 b"
               style="cursor: pointer"
@@ -151,12 +167,24 @@
         Go
       </button>
       <!--
-        This is a hack to reset the <input> when remoteUrl is set.
+        This is a hack to reset the <input> when panoUrl is set.
         Without this, an uploaded file persists even after the user enters a
         URL; if the same file is uploaded again, nothing happens because the
         <input> doesn't change.
+
+        Here are the steps to reproduce the bug:
+          1) Comment out the if/else
+          2) Add a single <input> (e.g. from the 'if' case)
+          3) Run the app
+          4) Click the 'Upload' button and upload a panorama
+          5) Click any example
+          6) Click the 'Upload' button and upload the same panorama from (4)
+
+        What should happen: the uploaded panorama should be displayed
+
+        What actually happens: the panorama does not change
       -->
-      {#if $remoteUrl}
+      {#if !isObjectUrl(panoUrl)}
         <input
           id="file-upload"
           type="file"
@@ -179,7 +207,7 @@
         style="cursor: pointer;"
         type="button"
         on:click={handleFileClick}>
-        {file ? file.name : 'Upload'}
+        {filename ? filename : 'Upload'}
       </button>
 
       <button
