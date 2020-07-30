@@ -12,7 +12,7 @@ View stereoscopic panoramas in your browser!
 
 ### format
 
-Only ["stacked"](https://developers.google.com/vr/discover/360-degree-media#common_formats) panoramas are supported. A "stacked" panorama is composed of two equirectangular-panoramas one on top of the other. 
+Only ["stacked"](https://developers.google.com/vr/discover/360-degree-media#common_formats) panoramas are supported. A "stacked" panorama is composed of two equirectangular-panoramas one on top of the other.
 
 Two sources are:
 
@@ -76,3 +76,7 @@ npm run build
 
 - This repo used to be called "overunder-aframe". It has been renamed to be more
   descriptive and to refocus on a core feature: displaying stereo panoramas.
+
+### references
+
+- The logo/favicon uses the [photo.svg](https://github.com/tabler/tabler-icons/blob/master/icons/photo.svg) tabler-icon.
