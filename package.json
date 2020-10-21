@@ -1,6 +1,6 @@
 {
   "name": "stereo-panorama-viewer",
-  "version": "0.1.1",
+  "version": "1.0.1",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
