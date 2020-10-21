@@ -8,7 +8,7 @@ View stereoscopic panoramas in your browser!
 
 ## usage
 
-- Head to [https://spano.photos](https://spano.photos/) to try it out.
+- Head to [https://spano.pyrik.dev/](https://spano.pyrik.dev/) to try it out.
 
 ### format
 
@@ -28,7 +28,7 @@ Should contain a direct link to a panorama.
 Example:
 
 ```
-https://spano.photos/?url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
+https://spano.pyrik.dev/?url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
 ```
 
 ### `embedded`
@@ -38,7 +38,7 @@ If the querystring contains `embedded`, then all UI will be hidden except for th
 Example:
 
 ```
-https://spano.photos/?embedded=&url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
+https://spano.pyrik.dev/?embedded=&url=https%3A%2F%2Fi.imgur.com%2FPgAHSy8.jpg
 ```
 
 ## local development
