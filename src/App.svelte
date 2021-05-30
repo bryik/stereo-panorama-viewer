@@ -22,23 +22,6 @@
   // Controls the visibility of the <Instructions/>
   let instructionsVisible = true;
 
-  onMount(async () => {
-    // Read and apply settings from querystring.
-    const querystring = Window.getQuerystring();
-
-    if (querystring.has("embedded")) {
-      // Hide instructions to make the UI less cluttered.
-      instructionsVisible = false;
-    }
-
-    if (querystring.has("url")) {
-      panoUrl = querystring.get("url");
-    } else {
-      // No URL provided in the querystring, so show a default panorama.
-      panoUrl = "https://i.imgur.com/PgAHSy8.jpg";
-    }
-  });
-
   interface fileUploadHandlerParams {
     newPanoUrl: string;
     newFilename?: string;
@@ -65,6 +48,23 @@
       Window.updateQuerystring({ url: panoUrl });
     }
   };
+
+  onMount(async () => {
+    // Read and apply settings from querystring.
+    const querystring = Window.getQuerystring();
+
+    if (querystring.has("embedded")) {
+      // Hide instructions to make the UI less cluttered.
+      instructionsVisible = false;
+    }
+
+    if (querystring.has("url")) {
+      panoUrl = querystring.get("url");
+    } else {
+      // No URL provided in the querystring, so show a default panorama.
+      panoUrl = "https://i.imgur.com/PgAHSy8.jpg";
+    }
+  });
 
 </script>
 
