@@ -1,9 +1,47 @@
 <script>
-  // This component allows the user to drag-and-drop images into their browser
-  // window.
+  /**
+   * This component allows the user to drag-and-drop files into their browser
+   * window.
+   */
 
-  import { onMount, onDestroy, createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  import { onMount, onDestroy } from "svelte";
+
+  // API
+  export let fileUploadHandler;
+
+  function dragover(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer.dropEffect = "copy";
+  }
+
+  function dragenter(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // Make the <body/> visibly change when a file is dragged into the window.
+    document.body.style.opacity = 0.5;
+  }
+
+  function dragleave(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // Return the <body/> to normal when a file is dragged outside of the window.
+    document.body.style.opacity = 1;
+  }
+
+  function drop(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const droppedFile = event.dataTransfer.files[0];
+
+    const newPanoUrl = URL.createObjectURL(droppedFile);
+    const newFilename = droppedFile.name;
+    fileUploadHandler({ newPanoUrl, newFilename });
+
+    // Return the <body/> to normal after a file is dropped.
+    document.body.style.opacity = 1;
+  }
 
   onMount(() => {
     // Drag and drop.
@@ -20,37 +58,4 @@
     document.removeEventListener("drop", drop, false);
   });
 
-  // Event handlers.
-  function dragover(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    event.dataTransfer.dropEffect = "copy";
-  }
-  function dragenter(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    // Provides feedback to the user
-    document.body.style.opacity = 0.5;
-  }
-  function dragleave(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    // Reset
-    document.body.style.opacity = 1;
-  }
-  function drop(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const droppedFile = event.dataTransfer.files[0];
-
-    dispatch("drop", {
-      filename: droppedFile.name,
-      objectUrl: URL.createObjectURL(droppedFile)
-    });
-    document.body.style.opacity = 1;
-  }
 </script>
