@@ -1,9 +1,8 @@
-<script>
-  // This component explains how to use the app and provides a way to enter
-  // direct links to panoramas.
-
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+<script lang="ts">
+  /**
+   * This component explains how to use the app and provides a way to enter
+   * direct (remote) links to stereo panoramas.
+   */
 
   import GithubCorner from "./GithubCorner.svelte";
   import isObjectUrl from "../utils/isObjectUrl.js";
@@ -12,6 +11,7 @@
   export let visible = true;
   export let panoUrl = null;
   export let filename = null;
+  export let fileUploadHandler;
 
   // Local state
   let minimized = false;
@@ -19,101 +19,85 @@
   const examples = [
     {
       url: "https://i.imgur.com/PgAHSy8.jpg",
-      label: "Red pond (The Witness)"
+      label: "Red pond (The Witness)",
     },
     {
       url: "https://i.imgur.com/xLc3Kj7.jpg",
-      label: "Reaching out (The Witness)"
+      label: "Reaching out (The Witness)",
     },
     {
       url: "https://i.imgur.com/xlrCeyV.jpg",
-      label: "Kaer Morhen Balcony (Witcher 3)"
+      label: "Kaer Morhen Balcony (Witcher 3)",
     },
     {
       url: "https://i.imgur.com/hD2QXlF.jpg",
-      label: "Mount Kilimanjaro (real life)"
-    }
+      label: "Mount Kilimanjaro (real life)",
+    },
   ];
 
+  // If panoUrl changes, urlInputValue must be updated to match.
   $: {
-    // Reset url input when a panorama is drag-and-dropped or uploaded.
     if (isObjectUrl(panoUrl)) {
+      // The new panoUrl is not a remote URL, so urlInputValue should be empty.
       urlInputValue = "";
     } else {
-      // A remote URL has been loaded, so update url input to reflect this.
+      // The new panoUrl IS a remote URL, so urlInputValue should match it.
       urlInputValue = panoUrl;
     }
   }
 
-  function toggleMinimized() {
-    minimized = !minimized;
-  }
+  const toggleMinimized = () => (minimized = !minimized);
 
-  function handleFormSubmit() {
-    dispatch("submission", {
-      url: urlInputValue
-    });
-  }
-
-  function handleFileUpload(event) {
-    const uploadedFile = event.target.files[0];
-    const fileObjectUrl = URL.createObjectURL(uploadedFile);
-    dispatch("upload", {
-      filename: uploadedFile.name,
-      objectUrl: fileObjectUrl
-    });
-  }
-
-  function handleFileClick() {
+  const handleFileClick = () => {
     const fileInput = document.getElementById("file-upload");
     fileInput.click();
-  }
+  };
+
+  const handleRemoteUrlSubmission = () =>
+    fileUploadHandler({
+      newPanoUrl: urlInputValue,
+      filename: "",
+      shouldUpdateQuerystring: true,
+    });
+
+  const handleFileUpload = (event) => {
+    const uploadedFile = event.target.files[0];
+    const newFilename = uploadedFile.name;
+    const newPanoUrl = URL.createObjectURL(uploadedFile);
+
+    fileUploadHandler({
+      newPanoUrl,
+      newFilename,
+    });
+  };
+
 </script>
-
-<style>
-  .instructions {
-    position: absolute;
-    z-index: 10;
-    top: 1rem;
-  }
-
-  button {
-    border: none;
-  }
-
-  summary {
-    cursor: pointer;
-  }
-
-  @media screen and (min-width: 30em) {
-    .instructions {
-      left: 1rem;
-    }
-  }
-</style>
 
 <div style={!visible && `display: none`}>
   {#if minimized}
     <div
       class="instructions glow br2 ph3 pv2 mb2 dib bg-near-white fr o-20"
       style="cursor: pointer;"
-      on:click={toggleMinimized}>
+      on:click={toggleMinimized}
+    >
       ...
     </div>
   {:else}
     <form
-      on:submit|preventDefault={handleFormSubmit}
-      class="instructions avenir ma3 pa3 bg-near-white br3 shadow-4">
+      on:submit|preventDefault={handleRemoteUrlSubmission}
+      class="instructions avenir ma3 pa3 bg-near-white br3 shadow-4"
+    >
       <GithubCorner repoUrl="https://github.com/bryik/stereo-panorama-viewer" />
       <h1 class="f4 f3-ns lh-title">Stereo Panorama Viewer</h1>
       <p class="lh-copy f5 measure">
         Drag and drop a
         <a
-          href="https://developers.google.com/vr/discover/360-degree-media#common_formats">
+          href="https://developers.google.com/vr/discover/360-degree-media#common_formats"
+        >
           stacked
         </a>
-        (over/under) stereo panorama into this window. Alternatively, provide a
-        URL below.
+        (over/under) stereo panorama into this window. Alternatively, provide a URL
+        below.
       </p>
 
       <details>
@@ -125,8 +109,9 @@
               style="cursor: pointer"
               on:click={() => {
                 urlInputValue = url;
-                handleFormSubmit();
-              }}>
+                handleRemoteUrlSubmission();
+              }}
+            >
               {label}
             </p>
           {:else}
@@ -135,8 +120,9 @@
               style="cursor: pointer"
               on:click={() => {
                 urlInputValue = url;
-                handleFormSubmit();
-              }}>
+                handleRemoteUrlSubmission();
+              }}
+            >
               {label}
             </p>
           {/if}
@@ -153,7 +139,8 @@
             aria-describedby="pano-desc"
             bind:value={urlInputValue}
             placeholder="https://i.imgur.com/xLc3Kj7.jpg"
-            required />
+            required
+          />
           <small id="pano-desc" class="f6 lh-copy black-60 db mb2">
             Must be a direct link to a stereo panorama hosted on a CORS-enabled
             host (e.g. Imgur).
@@ -163,7 +150,8 @@
       <button
         class="f6 link dim br2 ph3 pv2 mb2 dib white bg-near-black"
         style="cursor: pointer;"
-        type="submit">
+        type="submit"
+      >
         Go
       </button>
       <!--
@@ -191,7 +179,8 @@
           accept="image/*"
           on:change={handleFileUpload}
           style="display:none"
-          value="" />
+          value=""
+        />
       {:else}
         <input
           id="file-upload"
@@ -199,15 +188,17 @@
           accept="image/*"
           on:change={handleFileUpload}
           style="display:none"
-          value="" />
+          value=""
+        />
       {/if}
       <button
         id="upload-button"
         class="f6 link dim br2 ph3 pv2 mb2 dib white bg-near-black"
         style="cursor: pointer;"
         type="button"
-        on:click={handleFileClick}>
-        {filename ? filename : 'Upload'}
+        on:click={handleFileClick}
+      >
+        {filename ? filename : "Upload"}
       </button>
 
       <button
@@ -215,9 +206,33 @@
         type="button"
         class="f6 link dim br2 ph3 pv2 mb2 dib white bg-red fr"
         style="cursor: pointer;"
-        on:click={toggleMinimized}>
+        on:click={toggleMinimized}
+      >
         Close
       </button>
     </form>
   {/if}
 </div>
+
+<style>
+  .instructions {
+    position: absolute;
+    z-index: 10;
+    top: 1rem;
+  }
+
+  button {
+    border: none;
+  }
+
+  summary {
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 30em) {
+    .instructions {
+      left: 1rem;
+    }
+  }
+
+</style>
